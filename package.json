@@ -4,7 +4,8 @@
   "description": "WebAssembly build server written in node for linux servers",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "postinstall": "node install.js",
+    "start":"node index.js"
   },
   "repository": {
     "type": "git",

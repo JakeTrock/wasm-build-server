@@ -5,6 +5,27 @@ I'm deciding how this thing works as I write it's code, bare with me.
 
 Right now I've decided I want a function backend using restful API.
 
+## Installing
+First you need the software on your machine:
+
+`git clone https://github.com/RepComm/wasm-build-server.git`
+
+
+Change directories:
+`cd wasm-build-server`
+
+Install dependencies:
+`npm install`
+
+## Running
+`npm start`
+> $ npm start
+> 
+> wasm-build-server@1.0.0 start ... \wasm-build-server
+> node index.js
+> 
+> [wasm-build-server] restful api operating on port 80
+
 ## Creating A Project with rest API:
 
 `localhost/?type=create&name=some+project+name`
