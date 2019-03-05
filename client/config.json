@@ -1,0 +1,5 @@
+{
+    "backend":{
+        "api":"http://wasm.jonathancrowder.com/api"
+    }
+}
