@@ -1,12 +1,19 @@
-//https://wasm.jonathancrowder.com/client/
-const apiUrl = "https://wasm.jonathancrowder.com/api";
+const bcrypt = dcodeIO.bcrypt;
+const apiUrl = "http://localhost/Node/wasm-build-server/api";//"https://wasm.jonathancrowder.com/api";
 
-const setCookie = (key, val, millis)=> {
-    if (!millis || millis < 1000) millis = 1000 * 60 * 60 * 12; //12 hours
-    let exp = new Date();
-    exp.setTime(exp.getTime() + millis);
+const setCookie = (key, val, expDate)=> {
+    if (!expDate) {
+        expDate = new Date();
+        expDate.setTime(expDate.getTime() + 86400000); //In the future 24 hours
+    }
+    document.cookie = key + "=" + val + ";" + expDate.toUTCString(); + ";path=/";
+}
 
-    document.cookie = key + "=" + val + ";" + exp.toUTCString(); + ";path=/";
+const removeCookie = (key)=> {
+    let d = new Date();
+    d.setTime(0);
+    console.log(d);
+    setCookie(key, "", d);
 }
 
 const getCookie = (key)=> {
@@ -56,11 +63,30 @@ const urlWithArgs = (url, args)=> {
 
 //https://stackoverflow.com/questions/29775797/fetch-post-json-data
 const login = (email, pass, cb)=> {
-    fetch(urlWithArgs(apiUrl, {
+    let salt = bcrypt.genSaltSync(10);
+    let hash = bcrypt.hashSync(pass, salt);
 
-    }), ).then((response)=>response.json().then(cb));
+    let payload = new FormData();
+    payload.append("type", "login");
+    payload.append("email", email);
+    payload.append("pass", hash);
+
+    fetch(urlWithArgs(apiUrl, {
+        type:"login",
+        email:email,
+        pass:hash
+    })).then((response)=>{
+        response.json().then(cb);
+    });
 }
 
-if (getCookie("wasm-frontend-user-cookie") !== "") {
+let cookie = getCookie("wasm-frontend-user-cookie");
 
+if (cookie !== "") {
+    console.log("Already had cookie!", cookie);
+} else {
+    login("dev@jonathancrowder.com", "apassword", (response)=>{
+        setCookie("wasm-frontend-user-cookie", response["wasm-frontend-user-cookie"]);
+        console.log(response);
+    });
 }
