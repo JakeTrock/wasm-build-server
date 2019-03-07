@@ -61,15 +61,9 @@ const urlWithArgs = (url, args)=> {
     return url + appendStr;
 }
 
-//https://stackoverflow.com/questions/29775797/fetch-post-json-data
 const login = (email, pass, cb)=> {
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync(pass, salt);
-
-    let payload = new FormData();
-    payload.append("type", "login");
-    payload.append("email", email);
-    payload.append("pass", hash);
 
     fetch(urlWithArgs(apiUrl, {
         type:"login",
