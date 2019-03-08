@@ -1,9 +1,12 @@
 # wasm-build-server
-Setting up build environments? No thanks. Abstraction please!
+emsdk wants subsystem for linux? NAH. How about a build server!<br />
+Cause that's not overkill at all.
 
-I'm deciding how this thing works as I write it's code, bare with me.
+For the developer it is a nice way for multiple users to manage and schedule
+builds of their WebAssembly projects.
 
-Right now I've decided I want a function backend using restful API.
+Think Expo, but tiny and for WebAssembly emsdk projects.
+https://wasm.jonathancrowder.com/client
 
 ## Installing
 First you need the software on your machine:

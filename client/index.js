@@ -64,23 +64,28 @@ const urlWithArgs = (url, args)=> {
 const login = (email, pass, cb)=> {
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync(pass, salt);
-
+    console.log(hash);
+    
     fetch(urlWithArgs(apiUrl, {
         type:"login",
         email:email,
         pass:hash
     })).then((response)=>{
-        response.json().then(cb);
+        response.text().then((text)=>{
+            console.log(text);
+            cb(JSON.parse(text));
+        });
+        //response.json().then(cb);
     });
 }
 
 let cookie = getCookie("wasm-frontend-user-cookie");
 
-if (cookie !== "") {
-    console.log("Already had cookie!", cookie);
-} else {
+// if (cookie !== "") {
+//     console.log("Already had cookie!", cookie);
+// } else {
     login("dev@jonathancrowder.com", "apassword", (response)=>{
         setCookie("wasm-frontend-user-cookie", response["wasm-frontend-user-cookie"]);
         console.log(response);
     });
-}
+// }
