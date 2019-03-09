@@ -1,5 +1,6 @@
-const bcrypt = dcodeIO.bcrypt;
-const apiUrl = "http://localhost/Node/wasm-build-server/api";//"https://wasm.jonathancrowder.com/api";
+//const bcrypt = dcodeIO.bcrypt;
+//const apiUrl = "http://localhost/Node/wasm-build-server/api";
+const apiUrl = "https://wasm.jonathancrowder.com/api";
 
 const setCookie = (key, val, expDate)=> {
     if (!expDate) {
@@ -62,20 +63,12 @@ const urlWithArgs = (url, args)=> {
 }
 
 const login = (email, pass, cb)=> {
-    let salt = bcrypt.genSaltSync(10);
-    let hash = bcrypt.hashSync(pass, salt);
-    console.log(hash);
-    
     fetch(urlWithArgs(apiUrl, {
         type:"login",
         email:email,
-        pass:hash
+        pass:pass
     })).then((response)=>{
-        response.text().then((text)=>{
-            console.log(text);
-            cb(JSON.parse(text));
-        });
-        //response.json().then(cb);
+        response.json().then(cb);
     });
 }
 
