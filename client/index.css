@@ -6,21 +6,24 @@ body {
     background-color: rgb(114, 114, 114);
     color: white;
     font-family: 'Courier New', Courier, monospace;
+    overflow-x: hidden;
 }
 
 #header {
     width: 100%;
     height: 15%;
     background-color: rgb(69, 69, 69);
+    display: flex;
 }
 
 #userdisplay {
     display: inline-block;
     text-align: center;
-    background-color: #0b0b0b;
+    background-color: #414141;
     height: 100%;
     padding-left: 15px;
     padding-right: 15px;
+    flex: 1;
 }
 
 #loginout {
@@ -29,6 +32,7 @@ body {
     border-radius: 1px;
     padding-top: 2px;
     padding-bottom: 2px;
+    cursor:pointer;
 }
 
 #email, #pass {
@@ -42,4 +46,53 @@ body {
     color: #98c4c9;
     margin-top: 2px;
     margin-bottom: 2px;
+}
+
+#title {
+    font-size: 25px;
+    align-self: center;
+    flex: 1;
+}
+
+#titlecenter {
+    flex: 3;
+    display: flex;
+    text-align: center;
+}
+
+#content {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+#menu {
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+.menu-button:nth-child(odd) {
+    background: #bcbcbc;
+}
+
+.menu-button {
+    border: none;
+    padding: 0px;
+    flex: 1;
+    height: 3em;
+    background-color: rgb(168, 168, 168);
+    color: #262626;
+    font-size: medium;
+    cursor:pointer;
+}
+
+.menu-button:hover {
+    background-color: rgb(196, 196, 196);
+}
+
+.menu-button:active {
+    background-color: #a5a5a5;
 }
