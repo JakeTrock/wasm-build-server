@@ -106,10 +106,10 @@ let iEmail = get("email");
 let iPass = get("pass");
 
 if (iEmail.value == "") {
-    iEmail.value = "some@email.com";
+    iEmail.value = "demo@email.com";
 }
 if (iPass.value == "") {
-    iPass.value = "mypassword";
+    iPass.value = "apassword";
 }
 
 on(bLoginout, "click", ()=>{
