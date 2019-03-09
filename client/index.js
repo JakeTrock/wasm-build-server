@@ -1,6 +1,6 @@
 //const bcrypt = dcodeIO.bcrypt;
-const apiUrl = "http://localhost/Node/wasm-build-server/api";
-//const apiUrl = "https://wasm.jonathancrowder.com/api";
+//const apiUrl = "http://localhost/Node/wasm-build-server/api";
+const apiUrl = "https://wasm.jonathancrowder.com/api";
 
 const setCookie = (key, val, expDate)=> {
     if (!expDate) {
