@@ -78,6 +78,10 @@ const login = (email, pass, cb)=> {
     });
 }
 
+const logout = ()=>{
+    removeCookie("wasm-frontend-user-cookie");
+}
+
 const details = (cookie, cb)=>{
     fetch(urlWithArgs(apiUrl, {
         type:"details",
@@ -90,23 +94,55 @@ const details = (cookie, cb)=>{
 let cookie = getCookie("wasm-frontend-user-cookie");
 
 let get = (id)=>document.getElementById(id);
+let on = (e, type, cb, opts) => e.addEventListener(type, cb, opts);
+let isLoggedIn = ()=>{
+    let c = getCookie("wasm-frontend-user-cookie");
+    return c !== "" && c !== "undefined";
+}
 
 let sUserName = get("username");
+let bLoginout = get("loginout");
+let iEmail = get("email");
+let iPass = get("pass");
 
-if (cookie !== "") {
-    console.log("Already had cookie, retrieving data");
+if (iEmail.value == "") {
+    iEmail.value = "some@email.com";
+}
+if (iPass.value == "") {
+    iPass.value = "mypassword";
+}
+
+on(bLoginout, "click", ()=>{
+    if (isLoggedIn()) {
+        logout();
+        iEmail.style.display = "unset";
+        iPass.style.display = "unset";
+        sUserName.textContent = "Not logged in";
+        bLoginout.textContent = "Login";
+    } else {
+        login(iEmail.value, iPass.value, (resp)=>{
+            if (resp.status === "success") {
+                setCookie("wasm-frontend-user-cookie", resp["wasm-frontend-user-cookie"]);
+                console.log(resp);
+
+                details(getCookie("wasm-frontend-user-cookie"), (data)=>{
+                    console.log(data);
+                    sUserName.textContent = "Welcome, " + data.details.display;
+                    iEmail.style.display = "none";
+                    iPass.style.display = "none";
+                    bLoginout.textContent = "Logout";
+                });
+            }
+        });
+    }
+});
+
+if (isLoggedIn()) {
     details(getCookie("wasm-frontend-user-cookie"), (data)=>{
         console.log(data);
-        sUserName.textContent = data.details.display;
-    });
-} else {
-    login("dev@jonathancrowder.com", "apassword", (response)=>{
-        setCookie("wasm-frontend-user-cookie", response["wasm-frontend-user-cookie"]);
-        console.log(response);
-
-        details(getCookie("wasm-frontend-user-cookie"), (data)=>{
-            console.log(data);
-            sUserName.textContent = data.details.display;
-        });
+        sUserName.textContent = "Welcome, " + data.details.display;
+        iEmail.style.display = "none";
+        iPass.style.display = "none";
+        bLoginout.textContent = "Logout";
     });
 }
