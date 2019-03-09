@@ -12,6 +12,7 @@ function isSecure() {
 }
 
 header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
 
 $dbConfig = json_decode(file_get_contents("dbconfig.json"));
 

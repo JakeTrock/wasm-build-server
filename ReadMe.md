@@ -1,57 +1,38 @@
 # wasm-build-server
-emsdk wants subsystem for linux? NAH. How about a build server!<br />
-Cause that's not overkill at all.
+A build server and user/project based authenticated web app/backend for WebAssembly projects.
 
-For the developer it is a nice way for multiple users to manage and schedule
-builds of their WebAssembly projects.
+Think Expo, but they know what they're doing.
 
-Think Expo, but tiny and for WebAssembly emsdk projects.
+This thing is a little to complicated for simple instructions right now..
+
+I will try to write clear ones soon.
+
+
+Right now you can visit the app as I work on it:
 https://wasm.jonathancrowder.com/client
 
-## Installing
-First you need the software on your machine:
+The API is hosted here:
+https://wasm.jonathancrowder.com/api (documentation soon!)
 
-`git clone https://github.com/RepComm/wasm-build-server.git`
+## How does it work?
+wasm-build-server at it's core is a node.js server that will build WebAssembly projects.
 
+There is a secondary backend written in PHP and mysql, supplying a rest API (url based)<br />
+to supply authenticated user/project management. <br />
+This part is so that one build server can be used by many developers, and many<br />
+build server instances can be used if there are lots of users scheduling builds.
 
-Change directories:
-`cd wasm-build-server`
+The /client/ is just a simple web app that utilises the rest api, looks<br />
+pretty, and is developer friendly.
 
-Install dependencies:
-`npm install`
+## Why is this a thing?
+You may know that building emsdk projects requires linux/*nix (or a subsystem linux).<br />
+I have a linux server, and don't want to install a subsystem,<br />
+so here we are today.
 
-## Running
-`npm start`
-> $ npm start
-> 
-> wasm-build-server@1.0.0 start ... \wasm-build-server
-> node index.js
-> 
-> [wasm-build-server] restful api operating on port 80
+This is a huge learning thing for me, otherwise I wouldn't bother.<br />
+Later on I'll write/video what I've learned.
 
-## Creating A Project with rest API:
-
-`localhost/?type=create&name=some+project+name`
-
-Responds with project data information that will identify the project even before
-the server is done configuring it.
-
-```json
-{
-    "status":"success",
-    "desc":"Creating project",
-    "projectData":{
-        "name":"some project name",
-        "id":"513e55ea6472b95d2423a44fa97f5e"
-    }
-}
-```
-
-The id is what will be used to uniquely identify the project, even when there are projects with the same name.
-
-Future access to the project will be by supplying the project's id.
-
-
-I think I want to store the projects in a mysql database instead of writting directly to disk.
-
-I feel like this will be easier to secure. Ideally there would be multiple independent users with credentials.
+I plan on taking this project and reusing a bunch of it for gcc and microsoft cpp compilers<br />
+because I really REALLY hate trying to install them on my device, and I know<br />
+everyone else hates this as well.
