@@ -72,13 +72,35 @@ const login = (email, pass, cb)=> {
     });
 }
 
+const details = (cookie, cb)=>{
+    fetch(urlWithArgs(apiUrl, {
+        type:"details",
+        "wasm-frontend-user-cookie":cookie
+    })).then((response)=>{
+        response.json().then(cb);
+    })
+}
+
 let cookie = getCookie("wasm-frontend-user-cookie");
 
-// if (cookie !== "") {
-//     console.log("Already had cookie!", cookie);
-// } else {
+let get = (id)=>document.getElementById(id);
+
+let sUserName = get("username");
+
+if (cookie !== "") {
+    console.log("Already had cookie, retrieving data");
+    details(getCookie("wasm-frontend-user-cookie"), (data)=>{
+        console.log(data);
+        sUserName.textContent = data.details.display;
+    });
+} else {
     login("dev@jonathancrowder.com", "apassword", (response)=>{
         setCookie("wasm-frontend-user-cookie", response["wasm-frontend-user-cookie"]);
         console.log(response);
+
+        details(getCookie("wasm-frontend-user-cookie"), (data)=>{
+            console.log(data);
+            sUserName.textContent = data.details.display;
+        });
     });
-// }
+}
