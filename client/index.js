@@ -1,6 +1,12 @@
-//const bcrypt = dcodeIO.bcrypt;
-//const apiUrl = "http://localhost/Node/wasm-build-server/api";
-const apiUrl = "https://wasm.jonathancrowder.com/api";
+//Get our url
+let apiUrl = window.location.href;
+//Remove trailing / if it exists
+if (apiUrl.charAt(apiUrl.length-1) == "/") {
+    apiUrl = apiUrl.substring(0, apiUrl.length-1);
+}
+//Remove current file and replace with /api
+apiUrl = apiUrl.substring(0, apiUrl.lastIndexOf("/")) + "/api";
+console.log(apiUrl);
 
 const setCookie = (key, val, expDate)=> {
     if (!expDate) {

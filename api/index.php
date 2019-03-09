@@ -65,8 +65,11 @@ if ($conn->connect_error) {
                 $result->{"wasm-frontend-user-cookie"} = $data["active_cookie"];//getRandomHex(12);
             } else {
                 $result->status = "failed";
-                $result->desc = "Password hashes didn't match";
+                $result->desc = "Credentials incorrect"; //Don't incentivise brute forcing by telling them pw is wrong..
             }
+        } else {
+            $result->status = "failed";
+            $result->desc = "Credentials incorrect";
         }
         $stmt->close();
         break;
