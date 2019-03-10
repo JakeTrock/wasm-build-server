@@ -126,7 +126,7 @@ body {
 }
 
 #project-add-button {
-    background-image:url("images/project_add.svg");
+    background-image:url("/images/project_add.svg");
     background-size:auto 80%;
     background-repeat:no-repeat;
     background-position:center;

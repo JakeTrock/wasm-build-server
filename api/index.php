@@ -52,7 +52,6 @@ if ($conn->connect_error) {
         $stmt = $conn->prepare("SELECT * from user where email = ? LIMIT 1");
 
         $stmt->bind_param("s", $_GET["email"]);
-        $stmt->bind_result($pass);
 
         $stmt->execute();
         $data = $stmt->get_result();
@@ -86,13 +85,65 @@ if ($conn->connect_error) {
             $result->details = $data;
         } else {
             $result->status = "failed";
-            $result->details = "Couldn't retrieve data for cookie, problem with cookie?";
+            $result->desc = "Couldn't retrieve data for cookie, problem with cookie?";
         }
 
         $stmt->close();
         break;
+        case "publicdetails":
+        $stmt = $conn->prepare("SELECT display, email from user where id = ? LIMIT 1");
+        $stmt->bind_param("s", $_GET["id"]);
+        $stmt->execute();
+        $data = $stmt->get_result();
+        if ($data = $data->fetch_assoc()) {
+            $result->status = "success";
+            $result->publicdetails = $data;
+        } else {
+            $result->status = "failed";
+            $result->desc = "Couldn't retrieve publicdetails of nonexistent user id";
+        }
+        $stmt->close();
+        break;
         case "register":
-
+        if (!isset($_GET["pass"])) {
+            $result->status = "failed";
+            $result->desc = "No 'pass' param supplied, aborting.";
+            die(json_encode($result));
+        }
+        if (!isset($_GET["email"])) {
+            $result->status = "failed";
+            $result->desc = "No 'email' param supplied, aborting.";
+            die(json_encode($result));
+        }
+        if (!isset($_GET["display"])) {
+            $result->status = "failed";
+            $result->desc = "No 'display' param supplied, aborting.";
+            die(json_encode($result));
+        }
+        $stmt = $conn->prepare("SELECT display from user WHERE email = ?");
+        $stmt->bind_param("s", $_GET["email"]);
+        $stmt->execute();
+        $data = $stmt->get_result();
+        if ($data = $data->fetch_assoc()) {
+            $result->status = "failed";
+            $result->desc = "A user with that email is registered already?";
+        } else {
+            $stmt0 = $conn->prepare("INSERT INTO user (id, display, active_cookie, password, email) VALUES (NULL, ?, ?, ?, ?);");
+            $cookie = getRandomHex(12);
+            $hashpass = password_hash($_GET["pass"], PASSWORD_BCRYPT);
+            $stmt0->bind_param("ssss", $_GET["display"], $cookie, $hashpass, $_GET["email"]);
+            $stmt0->execute();
+            $data0 = $conn->affected_rows;
+            if ($data0 > 0) {
+                $result->status = "success";
+                $result->desc = "Added " . $_GET["display"] . " to the registered users";
+            } else {
+                $result->status = "failed";
+                $result->desc = "Nothing changed? This shouldn't happen, please notify author!";
+            }
+            $stmt0->close();
+        }
+        $stmt->close();
         break;
         case "project-create":
 
