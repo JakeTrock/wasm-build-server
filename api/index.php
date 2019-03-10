@@ -145,6 +145,19 @@ if ($conn->connect_error) {
         }
         $stmt->close();
         break;
+        case "projects-list": 
+        $stmt = $conn->prepare("SELECT name, id, fetchurl, description from project where owner = ? LIMIT 10");
+        $stmt->bind_param("s", $_GET["owner"]);
+        $stmt->execute();
+        $data = $stmt->get_result();
+        
+        $result->projects = array();
+        while ($data0 = $data->fetch_assoc()) {
+            array_push($result->projects, $data0);
+        }
+        $result->status = "success";
+        $stmt->close();
+        break;
         case "project-create":
 
         break;
