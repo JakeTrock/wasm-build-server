@@ -159,7 +159,59 @@ if ($conn->connect_error) {
         $stmt->close();
         break;
         case "project-create":
+        if (!isset($_GET["name"])) {
+            $result->status = "failed";
+            $result->desc = "No 'name' param supplied, aborting.";
+            die(json_encode($result));
+        }
+        if (!isset($_GET["fetchurl"])) {
+            $result->status = "failed";
+            $result->desc = "No 'fetchurl' param supplied, aborting.";
+            die(json_encode($result));
+        }
+        if (!isset($_GET["description"])) {
+            $result->status = "failed";
+            $result->desc = "No 'description' param supplied, aborting.";
+            die(json_encode($result));
+        }
+        if (!isset($_GET["wasm-frontend-user-cookie"])) {
+            $result->status = "failed";
+            $result->desc = "Cookie of current user wasn't supplied, cannot create project!";
+            die(json_encode($result));
+        }
+        //BEGIN GET USER ID FROM COOKIE
+        $stmt = $conn->prepare("SELECT display, id from user where active_cookie = ? LIMIT 1");
 
+        $stmt->bind_param("s", $_GET["wasm-frontend-user-cookie"]);
+
+        $stmt->execute();
+        $data = $stmt->get_result();
+        if ($data = $data->fetch_assoc()) {
+            $result->status = "success";
+            $result->details = $data;
+        } else {
+            $result->status = "failed";
+            $result->desc = "Couldn't retrieve data for cookie, problem with cookie? Cannot create project!";
+            die(json_encode($result));
+        }
+
+        $stmt->close();
+        $id = $data["id"];
+        //END
+
+        $stmt0 = $conn->prepare("INSERT INTO project (name, id, fetchurl, owner, description) VALUES (?, NULL, ?, ?, ?);");
+
+        $stmt0->bind_param("ssis", $_GET["name"], $_GET["fetchurl"], $id, $_GET["description"]);
+        $stmt0->execute();
+        $data0 = $conn->affected_rows;
+        if ($data0 > 0) {
+            $result->status = "success";
+            $result->desc = "Added " . $_GET["name"] . " to user " . $data["display"] . "'s projects";
+        } else {
+            $result->status = "failed";
+            $result->desc = "Nothing changed? This shouldn't happen, please notify author!";
+        }
+        $stmt0->close();
         break;
         default:
         $result->desc = "Unsupported request operation '" . $reqType . "', gracefully cancelling.";

@@ -119,6 +119,18 @@ const projectList = (owner, cb) => {
     });
 }
 
+const createProj = (name, fetchurl, description, cb)=>{
+    fetch(urlWithArgs(apiUrl, {
+        type:"project-create",
+        name:name,
+        fetchurl:fetchurl,
+        description:description,
+        "wasm-frontend-user-cookie":getCookie("wasm-frontend-user-cookie")
+    })).then((response)=>{
+        response.json().then(cb);
+    });
+}
+
 let cookie = getCookie("wasm-frontend-user-cookie");
 
 let get = (id)=>document.getElementById(id);
@@ -192,6 +204,29 @@ on(bLoginout, "click", ()=>{
             }
         });
     }
+});
+
+on(get("project-create-submit"), "click", ()=>{
+    createProj(
+        get("project-create-name").value,
+        get("project-create-fetchurl").value,
+        get("project-create-description").value,
+        (data)=>{
+            console.log(data);
+            
+            setTimeout(()=>{
+                get("project-create-page").style.visibility = "hidden";
+            }, 1500);
+        }
+    );
+});
+
+on(get("project-create-cancel"), "click", ()=>{
+    get("project-create-page").style.visibility = "hidden";
+});
+
+on(get("project-add-button"), "click", ()=>{
+    get("project-create-page").style.visibility = "visible";
 });
 
 if (isLoggedIn()) {

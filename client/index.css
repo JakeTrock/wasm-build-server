@@ -107,10 +107,11 @@ body {
     display: inline-block;
     background-color: rgb(175, 175, 175);
     border-radius: 0.25em;
-    width: 32.4%;
+    width: 30%;
     height: 25%;
     overflow: hidden;
     cursor: pointer;
+    margin-right: 2%;
 }
 
 .project:hover {
@@ -140,4 +141,67 @@ body {
 .project-desc {
     color: black;
     font-size: large;
+}
+
+#project-create-page {
+    position: fixed;
+    visibility: hidden;
+    margin: 0px;
+    padding: 0px;
+    top: 2%;
+    left: 2%;
+    width: 96%;
+    height: 96%;
+    background-color: #2a2a2a;
+    border-radius: 1em;
+}
+
+#project-create-page>input {
+    left: 50%;
+    width: 45%;
+    position: absolute;
+    border-radius: 0.25em;
+    height: 2em;
+    background-color: #404f53;
+    color: white;
+    border:none;
+}
+
+#project-create-page>span {
+    right: 50%;
+    position: absolute;
+}
+
+#project-create-title {
+    position:absolute;
+    text-align:center;
+    width:100%;
+    left:0%;
+    font-size:xx-large;
+}
+
+#project-create-cancel {
+    border: none;
+    position: absolute;
+    right: 52%;
+    width: 43%;
+    height: 2em;
+    background-color: #454444;
+    color: white;
+    font-weight: bold;
+}
+
+#project-create-submit {
+    border: none;
+    position: absolute;
+    left: 52%;
+    width: 43%;
+    height: 2em;
+    background-color: #454444;
+    color: white;
+    font-weight: bold;
+}
+
+button {
+    cursor:pointer;
 }
