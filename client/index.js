@@ -135,6 +135,7 @@ let cookie = getCookie("wasm-frontend-user-cookie");
 
 let get = (id) => document.getElementById(id);
 let on = (e, type, cb, opts) => e.addEventListener(type, cb, opts);
+let rect = (e)=>e.getBoundingClientRect();
 
 let isLoggedIn = () => {
     let c = getCookie("wasm-frontend-user-cookie");
@@ -145,7 +146,14 @@ let sUserName = get("username");
 let bLoginout = get("loginout");
 let iEmail = get("email");
 let iPass = get("pass");
+let dContent = get("content");
 let dProjects = get("projects");
+
+let pageScroll = (id) => {
+    get(id).scrollIntoView({
+        behavior:"smooth"
+    });
+}
 
 if (iEmail.value == "") {
     iEmail.value = "demo@email.com";

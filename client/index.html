@@ -23,15 +23,24 @@
         </div>
     </div>
     <div id="menu">
-        <button class="menu-button" id="mprojects">Projects</button>
-        <button class="menu-button" id="mbuilds">Builds</button>
-        <button class="menu-button" id="mhooks">WebHooks</button>
+        <button class="menu-button" id="mprojects" onclick="pageScroll('projects')">Projects</button>
+        <button class="menu-button" id="mbuilds" onclick="pageScroll('builds')">Builds</button>
+        <button class="menu-button" id="mhooks" onclick="pageScroll('webhooks')">WebHooks</button>
     </div>
     <div id="content">
-        <div id="projects">
+        <div class="page" id="projects">
+            <span class="page-title">Projects</span>
             <br />
             <div class="project" id="project-add-button">
             </div>
+        </div>
+        <div class="page" id="builds">
+            <span class="page-title">Builds</span>
+            <br />
+        </div>
+        <div class="page" id="webhooks">
+            <span class="page-title">WebHooks</span>
+            <br />
         </div>
     </div>
     <div id="project-create-page">
